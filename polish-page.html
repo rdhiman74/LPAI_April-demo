@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LaunchPath AI — Polish Review Page</title>
+  <style>
+    :root{
+      --bg:#08111d;
+      --bg2:#0d1726;
+      --card:#132033;
+      --card2:#18263b;
+      --stroke:#2c415d;
+      --text:#f4f7fb;
+      --muted:#9eb1c9;
+      --muted2:#c7d3e3;
+      --cyan:#22d3ee;
+      --cyan2:#38bdf8;
+      --green:#34d399;
+      --amber:#fbbf24;
+      --shadow:0 24px 70px rgba(0,0,0,.42);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 12% -8%, rgba(34,211,238,.14), transparent 42%),
+        linear-gradient(180deg,#0b1421,#08111d 58%,#050b13);
+      min-height:100vh;
+    }
+    .wrap{max-width:1360px;margin:0 auto;padding:16px 20px 20px}
+    .header{
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      padding-bottom:16px;margin-bottom:18px;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .mark{
+      width:40px;height:40px;border-radius:999px;flex:0 0 auto;
+      background:radial-gradient(circle at 30% 0, #22d3ee 0, #0ea5e9 40%, #111827 95%);
+      box-shadow:0 0 0 2px rgba(56,189,248,.55),0 14px 30px rgba(15,23,42,.85);
+    }
+    .brand-main{font-size:.98rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+    .brand-sub{font-size:.8rem;color:#c5d2e2}
+    .nav{display:flex;gap:10px;flex-wrap:wrap}
+    .nav a{
+      text-decoration:none;color:#dcedff;font-size:.84rem;
+      border:1px solid rgba(56,189,248,.28);
+      background:rgba(15,23,42,.48);
+      border-radius:999px;padding:9px 14px;
+    }
+
+    .shell{
+      background:linear-gradient(180deg, rgba(19,32,51,.97), rgba(10,18,28,.98));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:28px;
+      padding:16px;
+      box-shadow:var(--shadow);
+    }
+
+    .top{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:14px;
+      margin-bottom:8px;
+    }
+    .hero,.score-panel{
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:22px;
+      background:linear-gradient(180deg, rgba(10,18,28,.72), rgba(18,30,47,.94));
+      padding:10px 12px;
+      min-height:80px;
+    }
+    .eyebrow{
+      font-size:.72rem;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--muted);
+      font-weight:800;
+      margin-bottom:10px;
+    }
+    .hero h1{
+      margin:0;
+      font-size:1.2rem;
+      line-height:1.05;
+      letter-spacing:-.04em;
+      font-weight:900;
+    }
+    .hero p{
+      margin:10px 0 0;
+      color:var(--muted2);
+      font-size:.88rem;
+      line-height:1.55;
+      max-width:560px;
+    }
+
+    .score-label{
+      font-size:.74rem;
+      text-transform:uppercase;
+      letter-spacing:.15em;
+      color:var(--muted);
+      font-weight:800;
+    }
+    .score-row{
+      display:flex;align-items:flex-end;gap:14px;line-height:1;margin-top:10px;
+    }
+    .score-before{
+      font-size:1.8rem;
+      letter-spacing:-.05em;
+      color:#aab9cb;
+      font-weight:900;
+    }
+    .score-arrow{
+      font-size:1.5rem;
+      color:var(--cyan);
+      font-weight:900;
+      padding-bottom:6px;
+    }
+    .score-after{
+      font-size:2.6rem;
+      letter-spacing:-.06em;
+      color:#ffffff;
+      font-weight:950;
+      text-shadow:0 0 24px rgba(34,211,238,.14);
+    }
+    .delta{
+      margin-top:10px;
+      display:inline-flex;
+      align-items:center;
+      border-radius:999px;
+      padding:8px 12px;
+      border:1px solid rgba(52,211,153,.22);
+      background:rgba(52,211,153,.10);
+      color:#ddfff2;
+      font-size:.84rem;
+      font-weight:850;
+    }
+    .chips{
+      display:flex;gap:8px;flex-wrap:wrap;margin-top:10px
+    }
+    .chip{
+      border-radius:999px;
+      padding:7px 11px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.04);
+      color:#deebf7;
+      font-size:.76rem;
+      font-weight:800;
+    }
+
+    .metric-row{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin-bottom:8px;
+    }
+    .metric{
+      border:1px solid rgba(255,255,255,.07);
+      background:rgba(255,255,255,.035);
+      border-radius:18px;
+      padding:10px 12px;
+      min-height:92px;
+    }
+    .metric-label{
+      font-size:.72rem;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-weight:800;
+      margin-bottom:8px;
+    }
+    .metric-value{
+      font-size:1.28rem;
+      letter-spacing:-.03em;
+      font-weight:900;
+      line-height:1.1;
+    }
+    .metric-sub{
+      margin-top:6px;
+      font-size:.8rem;
+      color:#bfd0e3;
+      line-height:1.4;
+    }
+
+    .essay-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+    .essay{
+      border:1px solid var(--stroke);
+      border-radius:24px;
+      padding:14px;
+      min-height:540px;
+      display:flex;
+      flex-direction:column;
+    }
+    .essay.before{
+      background:linear-gradient(180deg, rgba(10,16,25,.92), rgba(14,21,33,.98));
+      opacity:.9;
+    }
+    .essay.after{
+      background:
+        radial-gradient(480px 150px at 12% 0%, rgba(34,211,238,.12), transparent 52%),
+        linear-gradient(180deg, rgba(14,24,38,.98), rgba(17,28,44,.99));
+      border-color:rgba(34,211,238,.28);
+      box-shadow:
+        0 0 0 1px rgba(34,211,238,.10) inset,
+        0 0 26px rgba(34,211,238,.08);
+    }
+    .essay-head{
+      display:flex;justify-content:space-between;align-items:center;gap:10px;
+      margin-bottom:10px;
+    }
+    .essay-title{
+      font-size:.93rem;
+      font-weight:900;
+      letter-spacing:-.02em;
+    }
+    .essay-badge{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(255,255,255,.04);
+      color:#d2deec;
+      font-size:.72rem;
+      font-weight:850;
+      white-space:nowrap;
+    }
+    .essay.after .essay-badge{
+      border-color:rgba(34,211,238,.26);
+      background:rgba(34,211,238,.11);
+      color:#d8fbff;
+    }
+    .essay-body{
+      white-space:pre-wrap;
+      line-height:1.65;
+      font-size:.89rem;
+      color:#eef4fc;
+      overflow:auto;
+      max-height:548px;
+      padding-right:4px;
+    }
+    .essay.before .essay-body{color:#c7d3e3}
+    .hi{
+      position:relative;
+      background:rgba(34,211,238,.13);
+      border-bottom:1px solid rgba(34,211,238,.42);
+      border-radius:7px;
+      padding:1px 2px;
+      cursor:pointer;
+    }
+    .hi .tip{
+      position:absolute;
+      left:0;
+      bottom:126%;
+      border:1px solid rgba(255,255,255,.12);
+      background:#0b1624;
+      color:#eaf7ff;
+      border-radius:10px;
+      padding:7px 9px;
+      font-size:.72rem;
+      line-height:1.35;
+      box-shadow:0 16px 38px rgba(0,0,0,.35);
+      white-space:nowrap;
+      display:none;
+      z-index:5;
+    }
+    .hi:hover .tip{display:block}
+
+    .actions{
+      display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:14px;
+    }
+    .btn{
+      text-decoration:none;
+      border-radius:999px;
+      padding:11px 16px;
+      font-weight:850;
+      font-size:.84rem;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      color:#ffffff;
+    }
+    .btn.primary{
+      background:linear-gradient(135deg,#22d3ee,#3b82f6);
+      color:#05111b;
+      border-color:rgba(34,211,238,.55);
+      box-shadow:0 10px 24px rgba(34,211,238,.18);
+    }
+
+    @media (max-width:1120px){
+      .top{grid-template-columns:1fr}
+      .metric-row{grid-template-columns:1fr}
+      .essay-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:760px){
+      .wrap{padding:18px}
+      .score-before{font-size:1.9rem}
+      .score-after{font-size:2.7rem}
+      .hero h1{font-size:1.22rem}
+      .essay-body{font-size:.85rem}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="header">
+      <div class="brand">
+        <div class="mark"></div>
+        <div>
+          <div class="brand-main">LAUNCHPATH AI</div>
+          <div class="brand-sub">Essay Studio</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#">Home</a>
+        <a href="#">Student Workspace</a>
+        <a href="#">Essay Studio</a>
+      </nav>
+    </header>
+
+    <section class="shell">
+      <div class="top">
+        <div class="hero">
+          <div class="eyebrow">Final Polish</div>
+          <h1>Your essay is cleaner, stronger, and more admissions-ready.</h1>
+          <p>Students care about three things here: did the score improve, does the revised essay feel better, and do they want to keep this version.</p>
+        </div>
+
+        <div class="score-panel">
+          <div class="score-label">Admissions Strength Improved</div>
+          <div class="score-row">
+            <div class="score-before" id="scoreBefore">56</div>
+            <div class="score-arrow">→</div>
+            <div class="score-after" id="scoreAfter">56</div><span id="inlineDelta" style="margin-left:12px;font-size:.95rem;color:#9fffdc;font-weight:800;"></span>
+          </div>
+          
+          <div class="chips">
+            <div class="chip">Clearer opening</div>
+            <div class="chip">Stronger reflection</div>
+            <div class="chip">Cleaner flow</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-row">
+        <div class="metric">
+          <div class="metric-label">Writing Quality</div>
+          <div class="metric-value">61 → 78</div>
+          <div class="metric-sub">Sharper sentence control and better pacing.</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Risk</div>
+          <div class="metric-value">High → Med</div>
+          <div class="metric-sub">The draft feels less generic and more developed.</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Benchmark</div>
+          <div class="metric-value">50–59 → 70–79</div>
+          <div class="metric-sub">Closer to the range of stronger competitive essays.</div>
+        </div>
+      </div>
+
+      <div class="essay-grid">
+        <article class="essay before">
+          <div class="essay-head">
+            <div class="essay-title">Before — Original Essay</div>
+            <div class="essay-badge">Locked baseline</div>
+          </div>
+          <div class="essay-body">I used to think leadership meant being the loudest person in the room. During sophomore year, I ran for student council because I thought that title would prove I was capable. I lost, and at first I felt embarrassed because it confirmed what I feared most: maybe I was not the kind of person other people naturally followed.
+
+After that election, I stopped trying to be visible and started paying attention instead. When our debate team struggled to retain new members, I noticed that most freshmen left because they felt intimidated. Practices moved too quickly, and no one wanted to admit they were confused. I started staying after meetings to help them one by one, explaining cases in plain language and showing them how I prepared rebuttals.
+
+That small habit changed more than the team. I realized leadership was not something I claimed in front of people. It was something I built by making people feel capable beside me. By junior year, I was elected captain, but the title mattered less than the trust behind it. Debate taught me that influence does not begin with authority. It begins with attention, patience, and the willingness to help someone else find their voice.</div>
+        </article>
+
+        <article class="essay after">
+          <div class="essay-head">
+            <div class="essay-title">After — Final Polish</div>
+            <div class="essay-badge">Recommended version ✓</div>
+          </div>
+          <div class="essay-body">I used to think leadership belonged to the loudest person in the room. That belief followed me into sophomore year, when I ran for student council convinced that a title would prove I was capable. When I lost, the embarrassment hit harder than I expected. To me, it felt like evidence that I simply was not someone people wanted to follow.
+
+What changed me was not another campaign. It was what I noticed afterward. On our debate team, new members kept drifting away after only a few practices. Most were not uninterested; they were overwhelmed. Cases moved quickly, experienced debaters spoke in shorthand, and freshmen rarely admitted when they were lost. I began staying after practice to work with them one-on-one, translating arguments into plain language and walking them through how I built rebuttals.
+
+That routine taught me more about leadership than the election ever could. <span class="hi">I stopped measuring influence by visibility and started measuring it by whether someone else felt more confident because I was there.<span class="tip">Why this is better: clearer reflection</span></span> By junior year, I was elected captain, but the title mattered less than the trust behind it. Debate taught me that leadership is not about claiming authority. It begins with attention, patience, and the ability to help someone else discover their own voice.</div>
+        </article>
+      </div>
+
+      <div class="actions">
+        <a class="btn" href="#">Back</a>
+        <a class="btn primary" href="#">Use This Version</a>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function(){
+      const start = 56;
+      const end = 74;
+      const el = document.getElementById('scoreAfter');
+      const delta = document.getElementById('scoreDelta');
+      let current = start;
+      const totalDelta = end - start;
+      const duration = 850;
+      const steps = 30;
+      const increment = totalDelta / steps;
+      const interval = duration / steps;
+
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= end) {
+          current = end;
+          clearInterval(timer);
+        }
+        const value = Math.round(current);
+        el.textContent = value;
+        document.getElementById('inlineDelta').textContent = '+' + (value - start) + ' point improvement';
+      }, interval);
+    })();
+  </script>
+</body>
+</html>
